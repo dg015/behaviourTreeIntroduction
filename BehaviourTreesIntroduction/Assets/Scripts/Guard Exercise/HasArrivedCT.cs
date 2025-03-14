@@ -13,9 +13,11 @@ namespace NodeCanvas.Tasks.Conditions {
 		public BBParameter<Transform> Point2;
 		public BBParameter<NavMeshAgent> NavAgent;
 
-		//Use for initialization. This is called only once in the lifetime of the task.
-		//Return null if init was successfull. Return an error string otherwise
-		protected override string OnInit()
+        public BBParameter<bool> hasBeenInterrupted;
+
+        //Use for initialization. This is called only once in the lifetime of the task.
+        //Return null if init was successfull. Return an error string otherwise
+        protected override string OnInit()
 		{
 			
 			return null;

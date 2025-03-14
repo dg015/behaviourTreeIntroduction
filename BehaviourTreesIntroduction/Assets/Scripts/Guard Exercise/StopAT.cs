@@ -1,14 +1,20 @@
 using NodeCanvas.Framework;
 using ParadoxNotion.Design;
-
+using UnityEngine;
+using UnityEngine.AI;
 
 namespace NodeCanvas.Tasks.Actions {
 
 	public class StopAT : ActionTask {
 
-		//Use for initialization. This is called only once in the lifetime of the task.
-		//Return null if init was successfull. Return an error string otherwise
-		protected override string OnInit() {
+        public BBParameter<Transform> Interruptor;
+        public BBParameter<NavMeshAgent> navAgent;
+        public BBParameter<bool> hasBeenInterrupted;
+
+        //Use for initialization. This is called only once in the lifetime of the task.
+        //Return null if init was successfull. Return an error string otherwise
+        protected override string OnInit() {
+			
 			return null;
 		}
 
@@ -16,13 +22,20 @@ namespace NodeCanvas.Tasks.Actions {
 		//Call EndAction() to mark the action as finished, either in success or failure.
 		//EndAction can be called from anywhere.
 		protected override void OnExecute() {
-			EndAction(true);
+			//EndAction(true);
 		}
 
 		//Called once per frame while the action is active.
 		protected override void OnUpdate() {
-			
-		}
+            if (HasBeenInterrupted() == true)
+            {
+                navAgent.value.SetDestination(agent.transform.position);
+            }
+            else
+            {
+                EndAction(true);
+            }
+        }
 
 		//Called when the task is disabled.
 		protected override void OnStop() {
@@ -33,5 +46,18 @@ namespace NodeCanvas.Tasks.Actions {
 		protected override void OnPause() {
 			
 		}
-	}
+        private bool HasBeenInterrupted()
+        {
+            if (Vector3.Distance(agent.transform.position, Interruptor.value.position) < 5)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+    }
 }
